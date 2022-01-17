@@ -1,6 +1,10 @@
 import React, {Component} from "react";
-import { Alert, Button, TextInput, View, StyleSheet } from 'react-native';
+import { Button, TextInput, View, StyleSheet, Dimensions,SafeAreaView} from 'react-native';
+import HomePage from './homepage';
 
+
+
+var {height,width} = Dimensions.get('window');
 
 class LoginPage extends Component {
 
@@ -19,34 +23,33 @@ class LoginPage extends Component {
         if (this.state.username != mocked_user && this.state.passowrd != mocked_password){
            (password) => this.setState({ password });
            (username) => this.setState({ username });
+           return < HomePage/>
         }
         console.log(this.state.username);
         console.log(this.state.password);
     }
-    
+
     render(){
-        return  <View >
-            <TextInput
+        return  <SafeAreaView style={{backgroundColor :"red"}}>
+            <TextInput 
+
             value={this.username}
             onChangeText={(username) => this.setState({ username })}
             placeholder={'E-mail'}
-            //style={styles.input}
             />
-            <TextInput
+            <TextInput 
             value={this.password}
             onChangeText={(password) => this.setState({ password })}
             placeholder={'Password'}
             secureTextEntry={true}
-            //style={styles.input}
             />
-            
-            <Button
+            <Button 
             title={'Login'}
-            //style={styles.input}
             onPress={this.onLogin.bind(this)}
             />
-        </View>
+        </SafeAreaView>
     }
 }
+
 
 export default LoginPage;
