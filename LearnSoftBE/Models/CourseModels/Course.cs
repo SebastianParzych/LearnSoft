@@ -6,18 +6,23 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace LearnSoftBE.Models.UserModels
+namespace LearnSoftBE.Models.CourseModels
 {
-    [Table ("Classes")]
-    public class Class
+    [Table ("Courses")]
+    public class Course
     {
         [Key]
         [Required]
-        public int ClassId { get; set; }
+        public int CourseId { get; set; }
+
         [Required]
         public string  Name{ get; set; }
+
         [Required]
         public int ECTS{ get; set; }
 
+        [Required]
+        public int NumberOfHours{ get; set; }
+ 
     }
 }

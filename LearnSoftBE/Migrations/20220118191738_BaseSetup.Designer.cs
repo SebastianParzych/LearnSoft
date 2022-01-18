@@ -3,14 +3,16 @@ using System;
 using LearnSoftBE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnSoftBE.Migrations
 {
     [DbContext(typeof(LearnDataContext))]
-    partial class LearnDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220118191738_BaseSetup")]
+    partial class BaseSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,36 +105,13 @@ namespace LearnSoftBE.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseAssignment", b =>
-                {
-                    b.Property<int>("CourseAssignmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseCycleId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("FinalMark")
-                        .HasColumnType("float");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("WeightedMark")
-                        .HasColumnType("float");
-
-                    b.HasKey("CourseAssignmentId");
-
-                    b.HasIndex("CourseCycleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CourseAssignment");
-                });
-
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseCycle", b =>
                 {
                     b.Property<int>("ClassCycleId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CourseCycleId")
                         .HasColumnType("int");
 
                     b.Property<int>("CourseId")
@@ -149,31 +128,13 @@ namespace LearnSoftBE.Migrations
 
                     b.HasKey("ClassCycleId");
 
+                    b.HasIndex("CourseCycleId");
+
                     b.HasIndex("CourseId");
 
                     b.HasIndex("InstitudeId");
 
                     b.ToTable("CourseCycles");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseTutor", b =>
-                {
-                    b.Property<int>("CourseTutorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CourseCycleId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseTutorId");
-
-                    b.HasIndex("CourseCycleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CourseTutors");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.UnitModels.Department", b =>
@@ -275,8 +236,13 @@ namespace LearnSoftBE.Migrations
                 {
                     b.HasBaseType("LearnSoftBE.Models.UserModels.User");
 
+                    b.Property<int?>("CourseCycleClassCycleId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IndexNumber")
                         .HasColumnType("int");
+
+                    b.HasIndex("CourseCycleClassCycleId");
 
                     b.ToTable("Students");
                 });
@@ -288,8 +254,13 @@ namespace LearnSoftBE.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("text");
 
+                    b.Property<int?>("CourseCycleClassCycleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Degree")
                         .HasColumnType("text");
+
+                    b.HasIndex("CourseCycleClassCycleId");
 
                     b.ToTable("Tutors");
                 });
@@ -350,33 +321,12 @@ namespace LearnSoftBE.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseAssignment", b =>
-                {
-                    b.HasOne("LearnSoftBE.Models.UserModels.Student", null)
-                        .WithMany("AssigmentCourseList")
-                        .HasForeignKey("CourseAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", "AssigmentCourse")
-                        .WithMany()
-                        .HasForeignKey("CourseCycleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.Student", "AssigmentUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssigmentCourse");
-
-                    b.Navigation("AssigmentUser");
-                });
-
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseCycle", b =>
                 {
+                    b.HasOne("LearnSoftBE.Models.UserModels.User", null)
+                        .WithMany("AsignedCoursesList")
+                        .HasForeignKey("CourseCycleId");
+
                     b.HasOne("LearnSoftBE.Models.CourseModels.Course", "ClassInfo")
                         .WithMany()
                         .HasForeignKey("CourseId")
@@ -392,33 +342,6 @@ namespace LearnSoftBE.Migrations
                     b.Navigation("ClassInfo");
 
                     b.Navigation("ExeInstitute");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseTutor", b =>
-                {
-                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseCycleId");
-
-                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", null)
-                        .WithMany("CourseTutorsList")
-                        .HasForeignKey("CourseTutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.Tutor", null)
-                        .WithMany("AsignedCoursesList")
-                        .HasForeignKey("CourseTutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.Tutor", "Tutor")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Tutor");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.UnitModels.Department", b =>
@@ -460,6 +383,10 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.Student", b =>
                 {
+                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", null)
+                        .WithMany("StudentsList")
+                        .HasForeignKey("CourseCycleClassCycleId");
+
                     b.HasOne("LearnSoftBE.Models.UserModels.User", null)
                         .WithOne()
                         .HasForeignKey("LearnSoftBE.Models.UserModels.Student", "UserId")
@@ -469,6 +396,10 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.Tutor", b =>
                 {
+                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", null)
+                        .WithMany("TutorsList")
+                        .HasForeignKey("CourseCycleClassCycleId");
+
                     b.HasOne("LearnSoftBE.Models.UserModels.User", null)
                         .WithOne()
                         .HasForeignKey("LearnSoftBE.Models.UserModels.Tutor", "UserId")
@@ -485,24 +416,18 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseCycle", b =>
                 {
-                    b.Navigation("CourseTutorsList");
+                    b.Navigation("StudentsList");
+
+                    b.Navigation("TutorsList");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.User", b =>
                 {
+                    b.Navigation("AsignedCoursesList");
+
                     b.Navigation("ChatsList");
 
                     b.Navigation("MessageList");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.UserModels.Student", b =>
-                {
-                    b.Navigation("AssigmentCourseList");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.UserModels.Tutor", b =>
-                {
-                    b.Navigation("AsignedCoursesList");
                 });
 #pragma warning restore 612, 618
         }

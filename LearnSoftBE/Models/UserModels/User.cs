@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-
-
+using LearnSoftBE.Models.CourseModels;
+using LearnSoftBE.Models.ChatModels;
 
 namespace LearnSoftBE.Models.UserModels
 {
@@ -14,7 +14,7 @@ namespace LearnSoftBE.Models.UserModels
     {
         [Key]
         [Required]
-        public int IdUser { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -30,6 +30,12 @@ namespace LearnSoftBE.Models.UserModels
 
         [Required]
         public string Email { get; set; }
+
+        [ForeignKey("UserChatId")]
+        public virtual IEnumerable <UserChat> ChatsList { get; set; }
+
+        [ForeignKey("MessageId")]
+        public virtual IEnumerable <Message> MessageList { get; set; }
 
     }
 }

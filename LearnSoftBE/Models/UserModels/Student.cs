@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using LearnSoftBE.Models;
-
+using LearnSoftBE.Models.CourseModels;
 
 
 namespace LearnSoftBE.Models.UserModels
@@ -13,9 +12,11 @@ namespace LearnSoftBE.Models.UserModels
     [Table("Students")]
     public class Student : User
     {
-        public string GroupName { get; set; }
+        public int IndexNumber{ get; set; }
 
-        [ForeignKey("ClassId")]
-        public IEnumerable <Class> ClassesList { get; set; }
+        [ForeignKey("CourseAssignmentId")]
+        public virtual IEnumerable <CourseAssignment> AssigmentCourseList { get; set; }
+        
+
     }
 }
