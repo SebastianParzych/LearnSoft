@@ -1,5 +1,5 @@
 Skip to content
-Search or jump to…
+Search or jump toï¿½
 Pull requests
 Issues
 Marketplace
@@ -20,7 +20,7 @@ Insights
 gitignore/VisualStudio.gitignore
 @bdougie
 bdougie Merge pull request #3845 from kjchome/vshistory
-…
+ï¿½
 Latest commit a419663 on 11 Dec 2021
  History
  164 contributors
@@ -425,7 +425,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-© 2022 GitHub, Inc.
+ï¿½ 2022 GitHub, Inc.
 Terms
 Privacy
 Security
@@ -437,3 +437,7 @@ API
 Training
 Blog
 About
+# My  ignores
+appsettings.json
+LearnSoftBE/appsettings.json
+LearnSoftBE/ClassDiagram.cd
