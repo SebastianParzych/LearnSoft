@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LearnSoftBE.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using AutoMapper;
 
 
 namespace LearnSoftBE
@@ -31,11 +33,16 @@ namespace LearnSoftBE
         {
             var db_connstring = Configuration.GetConnectionString("LocalDbConnString");
             services.AddDbContext<LearnDataContext>(options => options.UseMySQL(db_connstring));
-            services.AddScoped<IUserDataRepository, UserDataRepository>();
+
             services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IUserDataRepository, UserDataRepository>();
+
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LearnSoftBE", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LearnSoftBE API", Version = "v1" });
             });
 
         }

@@ -18,12 +18,9 @@ namespace LearnSoftBE.Models.UnitModels
         [Required]
         public string DepartmentName { get; set; }
 
-        [ForeignKey("InstituteId")]
+        [ForeignKey("UniversityId")]
         [Required]
-        public  Institute Institute { get; set; }
+        public  University University { get; set; }
 
-        [ForeignKey("UserId")]
-        [Required]
-        public  Tutor Coordinator { get; set; }
     }
 }

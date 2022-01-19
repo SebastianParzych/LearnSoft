@@ -13,10 +13,5 @@ namespace LearnSoftBE.Models.UserModels
     public class Student : User
     {
         public int IndexNumber{ get; set; }
-
-        [ForeignKey("CourseAssignmentId")]
-        public virtual IEnumerable <CourseAssignment> AssigmentCourseList { get; set; }
-        
-
     }
 }

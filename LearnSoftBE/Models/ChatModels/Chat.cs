@@ -16,12 +16,6 @@ namespace LearnSoftBE.Models.ChatModels
         [Required]
         public int ChatId { get; set; }
 
-        [ForeignKey("MessageId")]
-        public  virtual IEnumerable <Message> MessagesList { get; set; }
-
-        [ForeignKey("UserChatId")]
-        [Required]
-        public virtual IEnumerable <User>  ChatUsers { get; set; }
 
         public string ChatName { get; set; }
 

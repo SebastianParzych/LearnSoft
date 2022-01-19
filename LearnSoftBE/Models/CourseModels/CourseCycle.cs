@@ -21,14 +21,12 @@ namespace LearnSoftBE.Models.CourseModels
         public int SemesterNumber { get; set; }
 
         [Required]
-        [ForeignKey("InstitudeId")]
-        public Institute ExeInstitute { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department ExeDepartment { get; set; }
 
         [Required]
         [ForeignKey("CourseId")]
         public Course ClassInfo { get; set; }
- 
-        [ForeignKey("CourseTutorId")]
-        public virtual IEnumerable<CourseTutor> CourseTutorsList { get; set; }
+
     }
 }

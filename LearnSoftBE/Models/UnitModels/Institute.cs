@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace LearnSoftBE.Models.UnitModels
 {
     [Table("Institutes")]
@@ -17,8 +18,10 @@ namespace LearnSoftBE.Models.UnitModels
         [Required]
         public string InstituteName { get; set; }
 
-        [ForeignKey("UniversityId")]
+        [ForeignKey("DepartmentId")]
         [Required]
-        public  University University{ get; set; }
+        public  Department Department { get; set; }
+        
+
     }
 }

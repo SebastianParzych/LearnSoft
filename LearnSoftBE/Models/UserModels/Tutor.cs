@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using LearnSoftBE.Models.CourseModels;
-
+using LearnSoftBE.Models.UnitModels;
 
 namespace LearnSoftBE.Models.UserModels
 {
@@ -15,8 +15,7 @@ namespace LearnSoftBE.Models.UserModels
 
         public string Bio { get; set; }
 
-        [ForeignKey("CourseTutorId")]
-        public virtual IEnumerable<CourseTutor> AsignedCoursesList { get; set; }
-
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
     }
 }

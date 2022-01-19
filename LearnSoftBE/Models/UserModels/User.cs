@@ -31,11 +31,6 @@ namespace LearnSoftBE.Models.UserModels
         [Required]
         public string Email { get; set; }
 
-        [ForeignKey("UserChatId")]
-        public virtual IEnumerable <UserChat> ChatsList { get; set; }
-
-        [ForeignKey("MessageId")]
-        public virtual IEnumerable <Message> MessageList { get; set; }
-
+        public byte[] Image { get; set; }
     }
 }

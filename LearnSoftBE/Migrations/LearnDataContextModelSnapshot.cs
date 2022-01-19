@@ -138,7 +138,7 @@ namespace LearnSoftBE.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InstitudeId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<int>("SemesterNumber")
@@ -151,7 +151,7 @@ namespace LearnSoftBE.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("InstitudeId");
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("CourseCycles");
                 });
@@ -186,17 +186,12 @@ namespace LearnSoftBE.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("InstituteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("UniversityId")
                         .HasColumnType("int");
 
                     b.HasKey("DepartmentId");
 
-                    b.HasIndex("InstituteId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UniversityId");
 
                     b.ToTable("Departments");
                 });
@@ -207,16 +202,16 @@ namespace LearnSoftBE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("InstituteName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UniversityId")
-                        .HasColumnType("int");
-
                     b.HasKey("InstitudeId");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Institutes");
                 });
@@ -248,6 +243,9 @@ namespace LearnSoftBE.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(4000)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -290,6 +288,11 @@ namespace LearnSoftBE.Migrations
 
                     b.Property<string>("Degree")
                         .HasColumnType("text");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Tutors");
                 });
@@ -383,15 +386,15 @@ namespace LearnSoftBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearnSoftBE.Models.UnitModels.Institute", "ExeInstitute")
+                    b.HasOne("LearnSoftBE.Models.UnitModels.Department", "ExeDepartment")
                         .WithMany()
-                        .HasForeignKey("InstitudeId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ClassInfo");
 
-                    b.Navigation("ExeInstitute");
+                    b.Navigation("ExeDepartment");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseTutor", b =>
@@ -423,25 +426,6 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.UnitModels.Department", b =>
                 {
-                    b.HasOne("LearnSoftBE.Models.UnitModels.Institute", "Institute")
-                        .WithMany()
-                        .HasForeignKey("InstituteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.Tutor", "Coordinator")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Coordinator");
-
-                    b.Navigation("Institute");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.UnitModels.Institute", b =>
-                {
                     b.HasOne("LearnSoftBE.Models.UnitModels.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
@@ -449,6 +433,17 @@ namespace LearnSoftBE.Migrations
                         .IsRequired();
 
                     b.Navigation("University");
+                });
+
+            modelBuilder.Entity("LearnSoftBE.Models.UnitModels.Institute", b =>
+                {
+                    b.HasOne("LearnSoftBE.Models.UnitModels.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.User", b =>
@@ -469,11 +464,17 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.Tutor", b =>
                 {
+                    b.HasOne("LearnSoftBE.Models.UnitModels.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
                     b.HasOne("LearnSoftBE.Models.UserModels.User", null)
                         .WithOne()
                         .HasForeignKey("LearnSoftBE.Models.UserModels.Tutor", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.ChatModels.Chat", b =>
