@@ -23,6 +23,7 @@ namespace LearnSoftBE.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseCycle> CourseCycles { get; set; }
+        public DbSet<UserUnit> UserUnits { get; set; }
         public DbSet<CourseAssignment> CourseAssignments { get; set; }
         public DbSet<CourseTutor> CourseTutors { get; set; }
         public DbSet<Chat> Chats { get; set; }

@@ -51,12 +51,16 @@ namespace LearnSoftBE.Controllers
             return Ok(user);
         }
         [HttpGet("search/user/{exp}")]
-        public async Task<ActionResult<User>> GetUserSearchResults(string exp)
+        public async Task<ActionResult<IEnumerable<UserSearchDtos>>> GetUserSearchResultsAsync(string exp)
         {
-           
-            var user_list= await _repository.GetUserByLoginPasswordAsync(exp);
-
-            return Ok(user_list);
+            var search_results= await _repository.GetUserByLoginPasswordAsync(exp);
+            return Ok(_mapper.Map<IEnumerable<UserSearchDtos>>(search_results));
+        }
+        [HttpGet("test/{exp}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetTestRepoResultsAsync(string exp)
+        {
+            var search_results = await _repository.GetTestRepoResultAsync(exp);
+            return Ok(search_results);
         }
     }
 }

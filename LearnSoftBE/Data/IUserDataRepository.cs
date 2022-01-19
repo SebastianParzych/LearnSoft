@@ -12,6 +12,7 @@ namespace LearnSoftBE.Data
         Task<User> GetUserByLoginPasswordAsync(string login, string password);
 
         Task<IEnumerable<User>> GetUserByLoginPasswordAsync(string exp);
+        Task<IEnumerable<User>> GetTestRepoResultAsync(string exp);
 
     }
 }

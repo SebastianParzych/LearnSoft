@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LearnSoftBE.Models.CourseModels;
 using LearnSoftBE.Models.ChatModels;
+using LearnSoftBE.Models.UnitModels;
 
 namespace LearnSoftBE.Models.UserModels
 {
@@ -31,6 +32,11 @@ namespace LearnSoftBE.Models.UserModels
         [Required]
         public string Email { get; set; }
 
+        [ForeignKey("UserUnitId")]
+        public  IEnumerable< UserUnit> UserUnits{ get; set; }
+
         public byte[] Image { get; set; }
+
+
     }
 }
