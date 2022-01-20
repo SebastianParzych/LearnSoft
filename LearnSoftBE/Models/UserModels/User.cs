@@ -36,7 +36,5 @@ namespace LearnSoftBE.Models.UserModels
         public  IEnumerable< UserUnit> UserUnits{ get; set; }
 
         public byte[] Image { get; set; }
-
-
     }
 }

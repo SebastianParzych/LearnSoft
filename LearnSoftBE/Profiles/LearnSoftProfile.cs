@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LearnSoftBE.Models.CourseModels;
 using LearnSoftBE.Models.UserModels;
+using LearnSoftBE.Models.ChatModels;
 using LearnSoftBE.Models.UnitModels;
 using LearnSoftBE.Dtos;
+
 
 namespace LearnSoftBE.Profiles
 {
@@ -23,16 +25,13 @@ namespace LearnSoftBE.Profiles
                 .ForMember(p => p.WeightedMark, opt => opt.MapFrom(src => src.WeightedMark))
                 .ForMember(p => p.FinalMark, opt => opt.MapFrom(src => src.FinalMark));
 
-            CreateMap<UserUnit, UserUnitsDtos>()
+            CreateMap<UserUnit, UserUnitsDto>()
                 .ForMember(p => p.UserUnitId, opt => opt.MapFrom(src => src.UserUnitId))
                 .ForMember(p => p.DepartmentName, opt => opt.MapFrom(src => src.UserDepartment.DepartmentName))
                 .ForMember(p => p.Role, opt => opt.MapFrom(src => src.Role));
-            // .ForMember(p => p.UserUnitId, opt => opt.MapFrom(src => src.DepartmentId)
 
-            CreateMap<User, UserSearchDtos>();
-
-
-
+            CreateMap<User, UserSearchDto>();
+            CreateMap<MessageDto, Message>();
         }
     }
 }

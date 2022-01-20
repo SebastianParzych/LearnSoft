@@ -1,10 +1,13 @@
-﻿using LearnSoftBE.Models.CourseModels;
+﻿using LearnSoftBE.Models.ChatModels;
+using LearnSoftBE.Models.CourseModels;
 using LearnSoftBE.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Threading.Tasks;
+using LearnSoftBE.Dtos;
 
 namespace LearnSoftBE.Data
 {
@@ -17,15 +20,30 @@ namespace LearnSoftBE.Data
             _context = context;
         }
 
-        public async  Task<IEnumerable<User>> GetTestRepoResultAsync(string exp)
+        public async Task<Chat> CreateNewChatAsync(Chat chat)
         {
-            var user = _context.Users
-                       .AsNoTracking()
-                       .Include(s=>s.UserUnits)
-                       .ThenInclude(p => p.UserDepartment)
-                       .AsEnumerable();
+            var new_chat = _context.Chats.Add(chat);
+            _context.SaveChanges();
 
-            return await Task.FromResult(user);
+            return await Task.FromResult(new_chat.Entity);
+        }
+
+        public async Task<Chat> GetChatWithMessagesAsync(int chatId)
+        {
+            var chat = _context.Chats
+                .AsNoTracking()
+                .Where(p=>p.ChatId== chatId)
+                .FirstOrDefault();
+   
+            chat.ChatMessageList = _context.Messages.AsNoTrackingWithIdentityResolution()
+                .Where(p => p.ChatId == chatId).ToList();
+
+            chat.Participants = _context.UserChats
+                .AsNoTrackingWithIdentityResolution()
+                .Include(p => p.User)
+                .Where(p => p.ChatId == chatId).ToList();
+       
+            return await Task.FromResult(chat);
         }
 
         public async Task<User> GetUserByLoginPasswordAsync(string login, string password)
@@ -75,6 +93,52 @@ namespace LearnSoftBE.Data
             return await Task.FromResult(course_list);
         }
 
+        public async  Task<Message> SendToChatMessageAsync(Message message)
+        {
+            var user_chats = _context.UserChats
+                .AsNoTracking()
+                .FirstOrDefault(p => (p.UserId == message.UserId )
+                                && (p.ChatId == message.ChatId));
+       
+            // Check if there is Chat with Asigned too Dto Sender
+            if (user_chats != null)
+            {
+                var new_mes = _context.Messages.Add(message);
+                _context.SaveChanges();
+                return await Task.FromResult(new_mes.Entity);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
+        public async Task<Message> UndoChatMessageAsync(int id)
+        {
+            var message = _context.Messages
+                .AsNoTracking()
+                .Where(p=>p.MessageId == id )
+                .FirstOrDefault();
+
+            _context.Messages.Attach(message);
+            _context.Messages.Remove(message);
+  
+            return await Task.FromResult(message);
+        }
+
+        public async Task<Message> FindMessageById(int id)
+        {
+            var message = _context.Messages
+               .AsNoTracking()
+               .Where(p => p.MessageId == id)
+               .FirstOrDefault();
+            _context.Attach(message);
+            return await Task.FromResult(message); 
+        }
+
+        public void SaveConfigs()
+        {
+            _context.SaveChanges();
+        }
     }
 }

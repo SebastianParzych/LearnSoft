@@ -6,18 +6,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using LearnSoftBE.Models.UserModels;
 
+
 namespace LearnSoftBE.Models.ChatModels
 {
     [Table("Chats")]
     public class Chat
     {
-
         [Key]
         [Required]
         public int ChatId { get; set; }
 
-
         public string ChatName { get; set; }
+
+        public virtual IEnumerable <Message> ChatMessageList { get; set; }
+        [ForeignKey("UserChatId")]
+        public virtual IEnumerable <UserChat> Participants { get; set; }
 
     }
 }

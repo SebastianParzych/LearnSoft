@@ -15,6 +15,7 @@ namespace LearnSoftBE.Data
         {
 
         }
+
         public DbSet<Student> Students { get; set; }
         public DbSet<Tutor> Tutors { get; set; }
         public DbSet<User> Users { get; set; }
@@ -28,7 +29,7 @@ namespace LearnSoftBE.Data
         public DbSet<CourseTutor> CourseTutors { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<UserChat> UserChats{ get; set; }
+        public DbSet<UserChat> UserChats { get; set; }
     }
 
 }

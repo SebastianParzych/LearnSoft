@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace LearnSoftBE.Dtos
 {
-    public class UserSearchDtos
+    public class UserSearchDto
     {
         public int UserId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
 
-        public IEnumerable <UserUnitsDtos> UserUnits{ get; set; }
+        public IEnumerable <UserUnitsDto> UserUnits{ get; set; }
 
     }
-    public class UserUnitsDtos
+    public class UserUnitsDto
     {
         public int UserUnitId { get; set; }
         public string DepartmentName { get; set; }
