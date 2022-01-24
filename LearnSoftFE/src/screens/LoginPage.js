@@ -1,6 +1,12 @@
 import React, {Component} from "react";
-import { Button, TextInput, View, StyleSheet, Dimensions,SafeAreaView} from 'react-native';
-import HomePage from './homepage';
+import { Button,
+        TextInput,
+        View,
+        StyleSheet,
+        Dimensions,
+        SafeAreaView,
+        Image} from 'react-native';
+
 
 
 
@@ -30,7 +36,10 @@ class LoginPage extends Component {
     }
 
     render(){
-        return  <SafeAreaView style={{backgroundColor :"red"}}>
+        return  <View style={styles.container}  >
+            <Image source={require('./../../assets/logo.png')} 
+            
+             style={{ width: width*0.25, height: height*0.25 }}/>
             <TextInput 
 
             value={this.username}
@@ -43,13 +52,28 @@ class LoginPage extends Component {
             placeholder={'Password'}
             secureTextEntry={true}
             />
-            <Button 
+            <Button  
             title={'Login'}
             onPress={this.onLogin.bind(this)}
             />
-        </SafeAreaView>
+        </View>
     }
 }
 
 
 export default LoginPage;
+
+
+const styles = StyleSheet.create({
+  container: {
+
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    button :{
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+  },
+});
