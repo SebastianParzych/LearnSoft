@@ -51,7 +51,14 @@ namespace LearnSoftBE.Controllers
         public async Task<ActionResult<CourseAssignment>> GetUserByLoginPasswordAsync(string login, string password)
         {
             var user = await _repository.GetUserByLoginPasswordAsync(login,password);
-            return Ok(user);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 
