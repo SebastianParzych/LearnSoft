@@ -32,17 +32,17 @@ namespace LearnSoftBE.Controllers
 
 
         [HttpGet("{id}/courses/")]
-        public async Task<ActionResult<IEnumerable<CourseListDto>>> GetUserCoursesListAsync(int UserId)
+        public async Task<ActionResult<IEnumerable<CourseListDto>>> GetUserCoursesListAsync(int id)
         {
-            var course_list= await  _repository.GetUserCoursesListAsync(UserId);
+            var course_list= await  _repository.GetUserCoursesListAsync(id);
             return Ok(_mapper.Map<IEnumerable<CourseListDto>>(course_list));
         }
 
 
         [HttpGet("{id}/courses/marks")]
-        public async Task<ActionResult<IEnumerable<CourseMarksListDto>>> GetUserCoursesWithMarksAsync(int UserId)
+        public async Task<ActionResult<IEnumerable<CourseMarksListDto>>> GetUserCoursesWithMarksAsync(int id)
         {
-            var course_list = await _repository.GetUserCoursesListAsync(UserId);
+            var course_list = await _repository.GetUserCoursesListAsync(id);
             return Ok(_mapper.Map<IEnumerable<CourseMarksListDto>>(course_list));
         }
 

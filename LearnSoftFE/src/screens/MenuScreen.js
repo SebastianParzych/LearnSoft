@@ -39,6 +39,8 @@ export default function App({navigation}) {
       title: "Oceny",
       screen: "Grades"
     }
+    
+
   ];
   
   const [listData, setListData] = React.useState(MenuList);
@@ -65,7 +67,7 @@ export default function App({navigation}) {
       />
       <View style={styles.enappdWrapper}>
       </View>
-                 <Button title="Go to Home" onPress={() => navigation.navigate('Details')} />
+               
     </SafeAreaView>
 
   );
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'black',
+  //  color: 'white',
   },
   list: {
     alignItems: 'center',
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
   item: {
     marginTop: 0,
     width: 300,
-    backgroundColor: 'white',
+   // backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingHorizontal: 5,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop:20,
     width: 300,
-    backgroundColor: 'white',
+  //  backgroundColor: 'white',
 
   }
 });

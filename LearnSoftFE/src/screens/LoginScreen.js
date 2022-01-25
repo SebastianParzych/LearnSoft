@@ -8,7 +8,7 @@ import { Button,
     Image,
     TouchableHighlightBase} from 'react-native';
     
-import  callLogin from "../api/ApiCaller";
+import  api from "../api/ApiCaller";
 import styles from "../Styles"
 import ActionButton from "./../components/ActionButton"
 
@@ -30,7 +30,7 @@ class LoginPage extends Component {
         if (this.state.username =="" && this.state.password==""){
             return
         }
-        var api_resp = callLogin({"login": this.state.username , 
+        var api_resp = api.callLogin({"login": this.state.username , 
                             "password": this.state.password})
 
         console.log(this.state);      
