@@ -35,6 +35,9 @@ namespace LearnSoftBE.Models.UserModels
         [ForeignKey("UserUnitId")]
         public  IEnumerable< UserUnit> UserUnits{ get; set; }
 
+        public virtual IEnumerable<Message> MessageSend { get; set; }
+        public virtual IEnumerable<Message> MessageRecieved { get; set; }
+
         public byte[] Image { get; set; }
     }
 }

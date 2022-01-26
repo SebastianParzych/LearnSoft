@@ -53,7 +53,7 @@ namespace LearnSoftBE.Controllers
             var user = await _repository.GetUserByLoginPasswordAsync(login,password);
             if (user != null)
             {
-                return Ok(user);
+                return Ok(_mapper.Map<LoginDto>(user));
             }
             else
             {
@@ -65,33 +65,63 @@ namespace LearnSoftBE.Controllers
         [HttpGet("search/user/{exp}")]
         public async Task<ActionResult<IEnumerable<UserSearchDto>>> GetUserSearchResultsAsync(string exp)
         {
-            var search_results= await _repository.GetUserByLoginPasswordAsync(exp);
+            var search_results= await _repository.GetUserSearchResultsAsync(exp);
             
             return Ok(_mapper.Map<IEnumerable<UserSearchDto>>(search_results));
         }
 
 
-        [HttpPost("chat/send")]
-        public async Task<ActionResult<IEnumerable<MessageDto>>> SendMeessageAsync(MessageDto mes)
+        [HttpGet("info")]
+        public async Task<ActionResult<UserSearchDto>> GetUserInfoAsync(int userId)
         {
-            var mapped_mes = _mapper.Map<Message>(mes);
-            var search_results = await _repository.SendToChatMessageAsync(mapped_mes);
-
-            if (search_results != null)
+            var userInfo = await _repository.GetUserInfoAsync(userId);
+            if (userInfo != null)
             {
-                return Ok(search_results);
+                return Ok(_mapper.Map<UserInfoDto>(userInfo));
             }
-            else 
-
+            else
             {
-                // temp solution
                 return NotFound();
+            }
+        }
+        [HttpGet("chat/")]
+        public async Task<ActionResult<ReturnMessageDto>> GetUsersChatAsync(int sender, int reciever)
+        {
+            
+            var messages = await _repository.GetDirectMessagesAsync(sender,reciever);
+
+            if (messages != null)
+            {
+               
+                return Ok(_mapper.Map<IEnumerable<ReturnMessageDto>>(messages));
+            }
+            else
+            {
+                return BadRequest();
             }
         }
 
 
-        [HttpPatch("chat/message/{id}")]
-        public async Task<ActionResult<IEnumerable<MessageDto>>> UpdateMessageAsync(int id, string content)
+        [HttpPost("chat/send")]
+        public async Task<ActionResult<ReturnMessageDto>> SendMeessageAsync(MessageDto mes)
+        {
+            var mapped_mes = _mapper.Map<Message>(mes);
+            var message= await _repository.CreateMessageAsync(mapped_mes);
+
+            if (message!= null)
+            {
+                _repository.SaveConfigs();
+                return Ok(_mapper.Map<ReturnMessageDto>(message));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [HttpPatch("chat/message/update")]
+        public async Task<ActionResult<MessageDto>> UpdateMessageAsync(int id, string content)
         {
  
             var search_results = await _repository.FindMessageById(id);
@@ -104,34 +134,49 @@ namespace LearnSoftBE.Controllers
             }
             else
             {
-                // temp solution
                 return NotFound();
             }
         }
 
-
-        [HttpDelete("chat/message/{id}")]
-        public async Task<ActionResult<IEnumerable<Chat>>> UndoMessageAsync(int id)
+        [HttpDelete("chat/message/undo")]
+        public async Task<ActionResult<ReturnMessageDto>> UndoMessageAsync(int messageId,int userId)
         {
-            var message_undo= await _repository.UndoChatMessageAsync(id);
-            if (message_undo != null)
+
+            var message = await _repository.FindMessageById(messageId);
+            if (message != null)
             {
-                _repository.SaveConfigs();
-                return Ok(message_undo);
+                if (message.SenderId == userId)
+                {
+                    await _repository.UndoMessageAsync(message);
+                    _repository.SaveConfigs();
+                    return Ok(_mapper.Map<ReturnMessageDto>(message));
+
+                }
+                else
+                {
+                    return BadRequest();
+                }
+   
             }
             else
             {
                 return NotFound();
             }
         }
-
-
-        [HttpGet("chat/{chatId}")]
-        public async Task<ActionResult<Chat>> GetChatWithMessagesAsync(int chatId)
+        [HttpPatch("chat/messages/state")]
+        public async Task<ActionResult<IEnumerable<ReturnMessageDto>>> SetSeenMessagesAsync(int reader, int sender)
         {
-            var chat = await _repository.GetChatWithMessagesAsync(chatId);
-            return Ok(chat);
-        }
 
-    }
+            var message = await _repository.SetMessagesSeenAsync(reader, sender);
+            if (message != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<ReturnMessageDto>>(message));
+            }
+            else
+            {
+                return Ok();
+            }
+         }
+
+        }
 }

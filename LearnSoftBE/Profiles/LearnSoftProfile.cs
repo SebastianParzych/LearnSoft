@@ -31,7 +31,11 @@ namespace LearnSoftBE.Profiles
                 .ForMember(p => p.Role, opt => opt.MapFrom(src => src.Role));
 
             CreateMap<User, UserSearchDto>();
+            CreateMap<User, UserInfoDto>();
+            CreateMap<User, LoginDto>();
             CreateMap<MessageDto, Message>();
+            CreateMap<Message, ReturnMessageDto>();
+                
         }
     }
 }

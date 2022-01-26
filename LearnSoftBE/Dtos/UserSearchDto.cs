@@ -20,4 +20,8 @@ namespace LearnSoftBE.Dtos
         public string DepartmentName { get; set; }
         public string Role { get; set; }
     }
+    public class UserInfoDto : UserSearchDto
+    {
+        public byte[] Image { get; set; }
+    }
 }

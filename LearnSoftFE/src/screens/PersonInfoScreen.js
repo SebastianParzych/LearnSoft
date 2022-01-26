@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text,Image,StyleSheet,Dimensions } from 'react-native';
+import { Button,TouchableOpacity, View, Text,Image,StyleSheet,Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Logo from './../components/Logo'
@@ -24,11 +24,16 @@ export default  function PersonInfoScreen({ route, navigation }) {
             {user.userUnits[0].role+", "+user.userUnits[0].departmentName} 
           </Text>
         </View>
-         <View style = {styles.itemUnderImage}>
+         <TouchableOpacity
+  
+         style = {styles.itemUnderImage}
+          onPress={ () =>{navigation.navigate("Chat", {...user}
+          )}}>
+
               <Text style={styles.text}>
             Chat
           </Text>
-            </View>
+            </TouchableOpacity>
           <View style={{flex:0.5,padding:10}}>
        
         </View>

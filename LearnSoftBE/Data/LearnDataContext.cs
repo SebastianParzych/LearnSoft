@@ -27,9 +27,7 @@ namespace LearnSoftBE.Data
         public DbSet<UserUnit> UserUnits { get; set; }
         public DbSet<CourseAssignment> CourseAssignments { get; set; }
         public DbSet<CourseTutor> CourseTutors { get; set; }
-        public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<UserChat> UserChats { get; set; }
     }
 
 }

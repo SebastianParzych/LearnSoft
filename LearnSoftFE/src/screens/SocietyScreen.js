@@ -32,7 +32,7 @@ export default  function DetailsScreen({ navigation }) {
       function Item({props} ){
           return (
             <TouchableOpacity style = {styles.item}
-                onPress={ (user) =>{navigation.navigate("PersonInfoScreen", {...props}
+                onPress={ () =>{navigation.navigate("PersonInfoScreen", {...props}
                 )}}>
               <Text style ={styles.itemText} >
                 {props.name} {props.surname}{"\n"}

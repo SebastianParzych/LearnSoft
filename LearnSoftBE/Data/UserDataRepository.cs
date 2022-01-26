@@ -20,31 +20,21 @@ namespace LearnSoftBE.Data
             _context = context;
         }
 
-        public async Task<Chat> CreateNewChatAsync(Chat chat)
+
+
+        public async Task<IEnumerable<Message>> GetDirectMessagesAsync(int sender, int reciever)
         {
-            var new_chat = _context.Chats.Add(chat);
-            _context.SaveChanges();
-
-            return await Task.FromResult(new_chat.Entity);
-        }
-
-        public async Task<Chat> GetChatWithMessagesAsync(int chatId)
-        {
-            var chat = _context.Chats
-                .AsNoTracking()
-                .Where(p=>p.ChatId== chatId)
-                .FirstOrDefault();
-   
-            chat.ChatMessageList = _context.Messages.AsNoTrackingWithIdentityResolution()
-                .Where(p => p.ChatId == chatId).ToList();
-
-            chat.Participants = _context.UserChats
+            var chat = _context.Messages
                 .AsNoTrackingWithIdentityResolution()
-                .Include(p => p.User)
-                .Where(p => p.ChatId == chatId).ToList();
-       
+                .Where(p => (p.SenderId == sender && p.RecieverId == reciever) 
+                       || (p.SenderId == reciever && p.RecieverId == sender))
+                .OrderByDescending(p => p.MessageDateTime);
+
             return await Task.FromResult(chat);
         }
+
+ 
+
 
         public async Task<User> GetUserByLoginPasswordAsync(string login, string password)
         {
@@ -54,7 +44,7 @@ namespace LearnSoftBE.Data
             return await Task.FromResult(user);
         }
 
-        public async Task<IEnumerable<User>> GetUserByLoginPasswordAsync(string exp)
+        public async Task<IEnumerable<User>> GetUserSearchResultsAsync(string exp)
         {
             IEnumerable<User> matches = null;
             var splited_exp  = exp.Split(' ');
@@ -93,25 +83,7 @@ namespace LearnSoftBE.Data
             return await Task.FromResult(course_list);
         }
 
-        public async  Task<Message> SendToChatMessageAsync(Message message)
-        {
-            var user_chats = _context.UserChats
-                .AsNoTracking()
-                .FirstOrDefault(p => (p.UserId == message.UserId )
-                                && (p.ChatId == message.ChatId));
-       
-            // Check if there is Chat with Asigned too Dto Sender
-            if (user_chats != null)
-            {
-                var new_mes = _context.Messages.Add(message);
-                _context.SaveChanges();
-                return await Task.FromResult(new_mes.Entity);
-            }
-            else
-            {
-                return null;
-            }
-        }
+
 
         public async Task<Message> UndoChatMessageAsync(int id)
         {
@@ -139,6 +111,54 @@ namespace LearnSoftBE.Data
         public void SaveConfigs()
         {
             _context.SaveChanges();
+        }
+
+        public async Task<Message> CreateMessageAsync(Message message)
+        {
+            var sent_mes = _context.Add(message);
+            
+            return await Task.FromResult(sent_mes.Entity);
+        }
+
+        public async Task<Message> UndoMessageAsync(Message message)
+        {
+            _context.Messages.Remove(message);
+
+            return await Task.FromResult(message);
+        }
+
+        public async Task<IEnumerable<Message>> SetMessagesSeenAsync(int reader, int sender)
+        {
+
+            var messages = _context.Messages
+                         .AsNoTracking()
+                         .Where(p => p.SenderId == sender && p.RecieverId == reader)
+                         .Where(p=>p.SenderId == sender)
+                         .Where(p => p.HasSeen == false)
+                         .OrderByDescending(p=>p.MessageDateTime)
+                         .ToList();
+            foreach (var el in messages)
+            {
+                     _context.Attach(el);
+              
+                el.HasSeen = true;
+
+            }
+                _context.SaveChanges();
+
+            return await Task.FromResult(messages);
+        }
+
+        public async Task<User> GetUserInfoAsync(int userId)
+        {
+            var userInfo = _context.Users
+                .AsNoTracking()
+                .Include(p=>p.UserUnits)
+                .ThenInclude(p=>p.UserDepartment)
+                .Where(p => p.UserId == userId)
+                .FirstOrDefault();
+
+            return await Task.FromResult(userInfo);
         }
     }
 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnSoftBE.Migrations
 {
     [DbContext(typeof(LearnDataContext))]
-    [Migration("20220119003805_BaseState")]
-    partial class BaseState
+    [Migration("20220126131044_basicchat")]
+    partial class basicchat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,23 +19,10 @@ namespace LearnSoftBE.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.13");
 
-            modelBuilder.Entity("LearnSoftBE.Models.ChatModels.Chat", b =>
-                {
-                    b.Property<int>("ChatId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ChatName")
-                        .HasColumnType("text");
-
-                    b.HasKey("ChatId");
-
-                    b.ToTable("Chats");
-                });
-
             modelBuilder.Entity("LearnSoftBE.Models.ChatModels.Message", b =>
                 {
                     b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Body")
@@ -43,45 +30,25 @@ namespace LearnSoftBE.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("HasSeen")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("MessageDateTime")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("RecieverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
                         .HasColumnType("int");
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("ChatId");
+                    b.HasIndex("RecieverId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.ChatModels.UserChat", b =>
-                {
-                    b.Property<int>("UserChatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserChatId");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserChats");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.Course", b =>
@@ -108,6 +75,7 @@ namespace LearnSoftBE.Migrations
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseAssignment", b =>
                 {
                     b.Property<int>("CourseAssignmentId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int>("CourseCycleId")
@@ -161,6 +129,7 @@ namespace LearnSoftBE.Migrations
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseTutor", b =>
                 {
                     b.Property<int>("CourseTutorId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int?>("CourseCycleId")
@@ -233,6 +202,29 @@ namespace LearnSoftBE.Migrations
                     b.ToTable("Universities");
                 });
 
+            modelBuilder.Entity("LearnSoftBE.Models.UnitModels.UserUnit", b =>
+                {
+                    b.Property<int>("UserUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserUnitId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserUnits");
+                });
+
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -261,12 +253,7 @@ namespace LearnSoftBE.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserChatId")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId");
-
-                    b.HasIndex("UserChatId");
 
                     b.ToTable("Users");
                 });
@@ -301,68 +288,25 @@ namespace LearnSoftBE.Migrations
 
             modelBuilder.Entity("LearnSoftBE.Models.ChatModels.Message", b =>
                 {
-                    b.HasOne("LearnSoftBE.Models.ChatModels.Chat", "Chatroom")
-                        .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.ChatModels.Chat", null)
-                        .WithMany("MessagesList")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.User", null)
-                        .WithMany("MessageList")
-                        .HasForeignKey("MessageId")
+                    b.HasOne("LearnSoftBE.Models.UserModels.User", "Reciever")
+                        .WithMany("MessageRecieved")
+                        .HasForeignKey("RecieverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LearnSoftBE.Models.UserModels.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithMany("MessageSend")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Chatroom");
+                    b.Navigation("Reciever");
 
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("LearnSoftBE.Models.ChatModels.UserChat", b =>
-                {
-                    b.HasOne("LearnSoftBE.Models.ChatModels.Chat", "Chat")
-                        .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.User", null)
-                        .WithMany("ChatsList")
-                        .HasForeignKey("UserChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseAssignment", b =>
                 {
-                    b.HasOne("LearnSoftBE.Models.UserModels.Student", null)
-                        .WithMany("AssigmentCourseList")
-                        .HasForeignKey("CourseAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", "AssigmentCourse")
                         .WithMany()
                         .HasForeignKey("CourseCycleId")
@@ -405,18 +349,6 @@ namespace LearnSoftBE.Migrations
                         .WithMany()
                         .HasForeignKey("CourseCycleId");
 
-                    b.HasOne("LearnSoftBE.Models.CourseModels.CourseCycle", null)
-                        .WithMany("CourseTutorsList")
-                        .HasForeignKey("CourseTutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnSoftBE.Models.UserModels.Tutor", null)
-                        .WithMany("AsignedCoursesList")
-                        .HasForeignKey("CourseTutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LearnSoftBE.Models.UserModels.Tutor", "Tutor")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -448,11 +380,29 @@ namespace LearnSoftBE.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("LearnSoftBE.Models.UserModels.User", b =>
+            modelBuilder.Entity("LearnSoftBE.Models.UnitModels.UserUnit", b =>
                 {
-                    b.HasOne("LearnSoftBE.Models.ChatModels.Chat", null)
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("UserChatId");
+                    b.HasOne("LearnSoftBE.Models.UnitModels.Department", "UserDepartment")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearnSoftBE.Models.UserModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearnSoftBE.Models.UserModels.User", null)
+                        .WithMany("UserUnits")
+                        .HasForeignKey("UserUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserDepartment");
                 });
 
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.Student", b =>
@@ -479,33 +429,13 @@ namespace LearnSoftBE.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("LearnSoftBE.Models.ChatModels.Chat", b =>
-                {
-                    b.Navigation("ChatUsers");
-
-                    b.Navigation("MessagesList");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.CourseModels.CourseCycle", b =>
-                {
-                    b.Navigation("CourseTutorsList");
-                });
-
             modelBuilder.Entity("LearnSoftBE.Models.UserModels.User", b =>
                 {
-                    b.Navigation("ChatsList");
+                    b.Navigation("MessageRecieved");
 
-                    b.Navigation("MessageList");
-                });
+                    b.Navigation("MessageSend");
 
-            modelBuilder.Entity("LearnSoftBE.Models.UserModels.Student", b =>
-                {
-                    b.Navigation("AssigmentCourseList");
-                });
-
-            modelBuilder.Entity("LearnSoftBE.Models.UserModels.Tutor", b =>
-                {
-                    b.Navigation("AsignedCoursesList");
+                    b.Navigation("UserUnits");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,15 +13,14 @@ namespace LearnSoftBE.Data
     {
         Task<IEnumerable<CourseAssignment>> GetUserCoursesListAsync(int UserId);
         Task<User> GetUserByLoginPasswordAsync(string login, string password);
-        Task<IEnumerable<User>> GetUserByLoginPasswordAsync(string exp);
-        Task<Chat> GetChatWithMessagesAsync(int chatId);
-
-
-        Task <Message> SendToChatMessageAsync(Message message);
+        Task<IEnumerable<User>> GetUserSearchResultsAsync(string exp);
+        Task<User> GetUserInfoAsync(int userId);
+        Task<IEnumerable<Message>> GetDirectMessagesAsync(int sender, int reciever);
         Task<Message> UndoChatMessageAsync(int id);
         Task<Message> FindMessageById(int id);
-        Task<Chat> CreateNewChatAsync(Chat chat);
-
+        Task<Message> CreateMessageAsync(Message message);
+        Task<Message> UndoMessageAsync(Message message);
+        Task<IEnumerable<Message>> SetMessagesSeenAsync(int reader, int sender);
         void SaveConfigs();
     }
 }

@@ -15,19 +15,15 @@ namespace LearnSoftBE.Models.ChatModels
         [Key]
         [Required]
         public int MessageId { get; set; }
-
-
         [Required]
-        public int UserId { get; set; }
+        public int SenderId { get; set; }
+        [Required]
+        public int RecieverId { get; set; }
 
-        [ForeignKey("UserId")]
+        [InverseProperty("MessageSend")]
         public virtual User Sender { get; set; }
-
-        [Required]
-        public int ChatId { get; set; }
-        [ForeignKey("ChatId")]
-        public virtual Chat Chatroom{ get; set; }
-
+        [InverseProperty("MessageRecieved")]
+        public virtual User Reciever { get; set; }
         [Required]
         [MaxLength(1000)]
         public string Body { get; set; }
