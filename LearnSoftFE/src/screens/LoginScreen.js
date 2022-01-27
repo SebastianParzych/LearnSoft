@@ -32,13 +32,9 @@ class LoginPage extends Component {
         }
         var api_resp = api.callLogin({"login": this.state.username , 
                             "password": this.state.password})
-
-        console.log(this.state);      
-        console.log("API RESPONSE",api_resp); 
-        api_resp.then((responseJson)=>{
-            console.log('getting data from fetch',responseJson)
-            if( responseJson.status != 404){
-                    this.props.navigation.navigate('Menu')
+        api_resp.then((userData)=>{
+            if( userData.status != 404){
+                    this.props.navigation.navigate('Menu',{userData})
             }
         setTimeout (()=>{
         }, 2000)

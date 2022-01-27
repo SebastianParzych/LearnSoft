@@ -8,11 +8,11 @@ import Logo from './../components/Logo'
 
 const widthConst = Dimensions.get('screen').width;
 
-export default  function DetailsScreen({ navigation }) {
-
+export default  function SocietyScreen({ route, navigation }) {
+    const host = route.params;
     const [text, onChangeText] = React.useState("");
     const [outerArr, onSearch] = React.useState([]);
-
+    console.log("SOCIETYSCREEN",route.params)
     React.useEffect(()=>handleSearch(),[text])
     const handleSearch =() =>{
       if(text.length==0){
@@ -28,15 +28,23 @@ export default  function DetailsScreen({ navigation }) {
             onSearch(innerArr)
         })
       }
-
+      
       function Item({props} ){
+        var role,department;
+        var roles=(props.userUnits.length != 0)
+        if (roles){
+          role =props.userUnits[0].role
+          department =props.userUnits[0].departmentName
+        }else{
+          role ="";
+          department="";
+        }
           return (
             <TouchableOpacity style = {styles.item}
-                onPress={ () =>{navigation.navigate("PersonInfoScreen", {...props}
-                )}}>
+                onPress={ () =>{navigation.navigate("PersonInfoScreen", {props,host})}}>
               <Text style ={styles.itemText} >
                 {props.name} {props.surname}{"\n"}
-                {props.userUnits[0].role}{"\n"}{props.userUnits[0].departmentName} 
+                {role}  {department}
               </Text>
         
             </TouchableOpacity>
@@ -107,8 +115,8 @@ const styles = StyleSheet.create({
   },
   item :{
        height:60,
-        alignItems:'center',
-         alignContent:'center',
+        alignItems:'left',
+         alignContent:'left',
          borderWidth : 1,
          borderRadius : 2,
          borderColor : 'black',
@@ -119,6 +127,9 @@ const styles = StyleSheet.create({
   itemText :{
     fontSize:20, 
     flexWrap: 'wrap',
-    flexShrink:1
+    flexShrink:1,
+    alignSelf :'left',
+    alignItems:'left',
+    alignContent:'left',
   }
 });

@@ -36,7 +36,7 @@ namespace LearnSoftBE
             services.AddCors();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddSignalR();
             services.AddScoped<IUserDataRepository, UserDataRepository>();
 
 
@@ -50,6 +50,7 @@ namespace LearnSoftBE
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             // global cors policy
             app.UseCors(x => x
                 .AllowAnyMethod()
@@ -73,6 +74,7 @@ namespace LearnSoftBE
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+           
             });
         }
     }

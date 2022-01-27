@@ -6,7 +6,7 @@ import LogoComponent from './../components/Logo'
 import ActionButton from './../components/ActionButton'
 const widthConst = Dimensions.get('screen').width;
 
-export default function App({navigation}) {
+export default function App({ route, navigation }) {
  
   const MenuList = [
     {
@@ -42,7 +42,7 @@ export default function App({navigation}) {
     
 
   ];
-  
+  console.log(route.params)
   const [listData, setListData] = React.useState(MenuList);
 
   function Item({ title , screen  }) {
@@ -50,7 +50,7 @@ export default function App({navigation}) {
     return (
       <ActionButton
            text = {title}
-           onPress={ () =>{navigation.navigate(screen)}}
+           onPress={ () =>{navigation.navigate(screen,route.params.userData)}}
       ></ActionButton> 
 
     );

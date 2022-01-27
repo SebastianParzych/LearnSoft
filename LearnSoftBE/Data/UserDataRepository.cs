@@ -154,7 +154,7 @@ namespace LearnSoftBE.Data
             var userInfo = _context.Users
                 .AsNoTracking()
                 .Include(p=>p.UserUnits)
-                .ThenInclude(p=>p.UserDepartment)
+                .ThenInclude(p=>p.User)
                 .Where(p => p.UserId == userId)
                 .FirstOrDefault();
 

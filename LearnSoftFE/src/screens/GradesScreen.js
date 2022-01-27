@@ -12,24 +12,24 @@ const widthConst = Dimensions.get('screen').width;
 
 
 
-export default   function GradeScreen({ navigation }) {
+export default   function GradeScreen({ route, navigation }) {
 
     function Item({props} ){
     return (
-      <View style={{flexDirection:"row", borderWidth:2, borderRadius: 2,  flex:1, padding: 5}}>
+      <View style={{flexDirection:"row", borderWidth:2, borderRadius: 2,  flex:1, padding: 5, width:widthConst/1.1}}>
         <View style ={styles.FirstItem}>
-            <Text >
+            <Text style={styles.text}>
                 {props.name}
              </Text>
         </View>
                 <View style ={styles.markItem}>
-            <Text>
+            <Text  style={styles.text}>
                 {props.weightedMark}
              </Text>
 
         </View>
                 <View style ={styles.markItem}>
-            <Text>
+            <Text  style={styles.text}>
                 {props.finalMark}
              </Text>
 
@@ -38,10 +38,8 @@ export default   function GradeScreen({ navigation }) {
     );
 
   }    
-
-
   const outerArr=[];    
-  api.callCoursesGrades({userid:3})
+  api.callCoursesGrades({userid:route.params.userId})
   	.then(response => response.json())
     .then(returnedData => {
               console.log(returnedData)
@@ -113,5 +111,10 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
 
   },
+  text :{
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf : 'center',
+  }
 
 });
