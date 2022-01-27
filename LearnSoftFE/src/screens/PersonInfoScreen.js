@@ -36,10 +36,8 @@ export default  function PersonInfoScreen({ route, navigation }) {
           </Text>
         </View>
          <TouchableOpacity
-  
          style = {styles.itemUnderImage}
           onPress={ () =>{navigation.navigate("Chat", {user,host})}}>
-
               <Text style={styles.text}>
             Chat
           </Text>
@@ -79,7 +77,5 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200
     },
-
-
 }
 )
