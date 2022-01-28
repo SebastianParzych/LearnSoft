@@ -13,5 +13,6 @@ namespace LearnSoftBE.Models.UserModels
     public class Student : User
     {
         public int IndexNumber{ get; set; }
+ 
     }
 }

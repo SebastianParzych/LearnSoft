@@ -37,7 +37,22 @@ namespace LearnSoftBE.Controllers
             var course_list= await  _repository.GetUserCoursesListAsync(id);
             return Ok(_mapper.Map<IEnumerable<CourseListDto>>(course_list));
         }
+        [HttpGet("/courses/{id}/info")]
+        public async Task<ActionResult<CourseInfoDto>> GetCourseInfo(int id)
+        {
+            var courseInfo = await _repository.GetFullCourseInfo(id);
+            if (courseInfo != null)
+            {
+                var asignedUsers = await _repository.GetAsignedUsersToCourse(courseInfo.ClassCycleId);
+                courseInfo.CourseAssignments = asignedUsers;
+                var xd = _mapper.Map<CourseFullInfoDto>(courseInfo);
+                return Ok(courseInfo);
 
+            }
+            else{
+                return NotFound();
+            }
+        }
 
         [HttpGet("{id}/courses/marks")]
         public async Task<ActionResult<IEnumerable<CourseMarksListDto>>> GetUserCoursesWithMarksAsync(int id)

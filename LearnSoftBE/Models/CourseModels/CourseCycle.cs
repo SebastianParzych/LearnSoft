@@ -28,5 +28,7 @@ namespace LearnSoftBE.Models.CourseModels
         [ForeignKey("CourseId")]
         public Course ClassInfo { get; set; }
 
+
+        public virtual IEnumerable<CourseAssignment> CourseAssignments { get; set; }
     }
 }

@@ -160,5 +160,28 @@ namespace LearnSoftBE.Data
 
             return await Task.FromResult(userInfo);
         }
+
+        public async Task<CourseCycle> GetFullCourseInfo(int cousrseId)
+        {
+            var courseInfo = _context.CourseCycles
+               .AsNoTracking()
+               .Include(p => p.ClassInfo)
+               .Include (p=>p.ExeDepartment)
+               .Where(p => p.ClassInfo.CourseId == cousrseId)
+               .FirstOrDefault();
+
+            return await Task.FromResult(courseInfo);
+        }
+
+        public async Task<IEnumerable<CourseAssignment>> GetAsignedUsersToCourse(int cousrseId)
+        {
+            var asignedUsers = _context.CourseAssignments
+             .AsNoTracking()
+             .Include(p => p.AssigmentUser)
+             .Where(p => p.CourseCycleId == cousrseId)
+             .AsEnumerable();
+
+            return await Task.FromResult(asignedUsers);
+        }
     }
 }

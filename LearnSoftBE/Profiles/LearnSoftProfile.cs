@@ -29,6 +29,10 @@ namespace LearnSoftBE.Profiles
                 .ForMember(p => p.UserUnitId, opt => opt.MapFrom(src => src.UserUnitId))
                 .ForMember(p => p.DepartmentName, opt => opt.MapFrom(src => src.UserDepartment.DepartmentName))
                 .ForMember(p => p.Role, opt => opt.MapFrom(src => src.Role));
+            CreateMap<CourseCycle, StudentCourseDto>();
+            CreateMap<Course, CourseInfoDto>();
+            CreateMap<CourseCycle, CourseFullInfoDto>();
+  
 
             CreateMap<User, UserSearchDto>();
             CreateMap<User, UserInfoDto>();

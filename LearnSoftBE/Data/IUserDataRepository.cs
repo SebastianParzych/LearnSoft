@@ -15,6 +15,8 @@ namespace LearnSoftBE.Data
         Task<User> GetUserByLoginPasswordAsync(string login, string password);
         Task<IEnumerable<User>> GetUserSearchResultsAsync(string exp);
         Task<User> GetUserInfoAsync(int userId);
+        Task<CourseCycle> GetFullCourseInfo(int cousrseId);
+        Task<IEnumerable<CourseAssignment>> GetAsignedUsersToCourse(int cousrseId);
         Task<IEnumerable<Message>> GetDirectMessagesAsync(int sender, int reciever);
         Task<Message> UndoChatMessageAsync(int id);
         Task<Message> FindMessageById(int id);

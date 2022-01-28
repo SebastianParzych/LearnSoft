@@ -15,14 +15,17 @@ namespace LearnSoftBE.Models.CourseModels
         [Key]
         [Required]
         public int CourseAssignmentId { get; set; }
-
+        [Required]
+        public int CourseCycleId { get; set; }
         [Required]
         [ForeignKey("CourseCycleId")]
         public CourseCycle AssigmentCourse { get; set; }
 
         [Required]
+        public int UserId { get; set; }
+
         [ForeignKey("UserId")]
-        public Student AssigmentUser { get; set; }
+        public virtual Student AssigmentUser { get; set; }
         public float WeightedMark { get; set; }
         public float FinalMark { get; set; }
 

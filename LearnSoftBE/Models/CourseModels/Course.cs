@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-
+using LearnSoftBE.Models.UserModels;
 
 namespace LearnSoftBE.Models.CourseModels
 {
@@ -23,6 +23,8 @@ namespace LearnSoftBE.Models.CourseModels
 
         [Required]
         public int NumberOfHours{ get; set; }
+
+
  
     }
 }

@@ -71,17 +71,16 @@ export default function ChatScreen({ route, navigation }) {
           />
       </View>
       <View style={{flex:0.05,backgroundColor:'white'}}>
-
       </View>
       <View style={{flex:0.2,backgroundColor:'rgb(37, 120, 180)',flexDirection:"row"}}>
       <TouchableOpacity style={{flex:1,backgroundColor:'rgb(37, 120, 180)'}}>
        <Text style={{color:'white', justifyContent:'center',alignSelf:'center',alignContent:'center'}}>
-              DODAJ ZAŁĄCZNIK
+               ZAŁĄCZNIK
        </Text>
       </TouchableOpacity>
     <TouchableOpacity style={{flex:1,backgroundColor:'red'}}>
        <Text style={{color:'white',alignItems:'center', alignSelf:'center',alignSelf:'center',alignContent:'center'}}>
-              Cofnij Wiadomość
+              Usuń ostatnią Wiadomość
        </Text>
       </TouchableOpacity>
       </View>
