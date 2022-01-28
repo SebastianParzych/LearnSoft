@@ -7,7 +7,7 @@ import ActionButton from './../components/ActionButton'
 const widthConst = Dimensions.get('screen').width;
 
 export default function CourseActionScreen({ route, navigation }) {
-    console.log(route.params)
+
     const user = route.params.user;
     const course = route.params.props;
   const MenuList = [
@@ -50,14 +50,11 @@ export default function CourseActionScreen({ route, navigation }) {
 
   ];
 
- // const [listData, setListData] = React.useState(MenuList);
-  console.log(user,course);
   function Item({ title , screen  }) {
-    console.log(screen)
     return (
       <ActionButton
            text = {title}
-           onPress={ () =>{navigation.navigate(screen,{user})}}
+           onPress={ () =>{navigation.navigate(screen,{user,course})}}
       ></ActionButton> 
 
     );
@@ -65,7 +62,7 @@ export default function CourseActionScreen({ route, navigation }) {
   return (
 
       <SafeAreaView style={styles.container}>
-          <LogoComponent header='xd'/>
+          <LogoComponent header={course.name}/>
       <FlatList
         data={MenuList}
         renderItem={({ item }) => <Item title={item.title} screen= {item.screen} />}

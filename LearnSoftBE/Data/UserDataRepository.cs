@@ -120,11 +120,16 @@ namespace LearnSoftBE.Data
             return await Task.FromResult(sent_mes.Entity);
         }
 
-        public async Task<Message> UndoMessageAsync(Message message)
+        public async Task<Message> UndoMessageAsync(int sender, int reciever)
         {
-            _context.Messages.Remove(message);
+            var mes_to_delete = _context.Messages
+                .Where(p => p.SenderId == sender && p.RecieverId == reciever)
+                .OrderBy(p => p.MessageDateTime)
+                .FirstOrDefault();
 
-            return await Task.FromResult(message);
+            _context.Messages.Remove(mes_to_delete);
+
+            return await Task.FromResult(mes_to_delete);
         }
 
         public async Task<IEnumerable<Message>> SetMessagesSeenAsync(int reader, int sender)
@@ -153,8 +158,8 @@ namespace LearnSoftBE.Data
         {
             var userInfo = _context.Users
                 .AsNoTracking()
-                .Include(p=>p.UserUnits)
-                .ThenInclude(p=>p.User)
+                .Include(s => s.UserUnits)
+                .ThenInclude(p => p.UserDepartment)
                 .Where(p => p.UserId == userId)
                 .FirstOrDefault();
 

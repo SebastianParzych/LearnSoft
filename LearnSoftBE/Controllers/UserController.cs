@@ -45,6 +45,7 @@ namespace LearnSoftBE.Controllers
             {
                 var asignedUsers = await _repository.GetAsignedUsersToCourse(courseInfo.ClassCycleId);
                 courseInfo.CourseAssignments = asignedUsers;
+
                 return Ok(_mapper.Map<CourseFullInfoDto>(courseInfo));
 
             }
@@ -153,29 +154,17 @@ namespace LearnSoftBE.Controllers
         }
 
         [HttpDelete("chat/message/undo")]
-        public async Task<ActionResult<ReturnMessageDto>> UndoMessageAsync(int messageId,int userId)
+        public async Task<ActionResult<ReturnMessageDto>> UndoMessageAsync(int sender,int reciever)
         {
-
-            var message = await _repository.FindMessageById(messageId);
-            if (message != null)
-            {
-                if (message.SenderId == userId)
-                {
-                    await _repository.UndoMessageAsync(message);
-                    _repository.SaveConfigs();
-                    return Ok(_mapper.Map<ReturnMessageDto>(message));
-
+            var undo_message= await _repository.UndoMessageAsync(sender, reciever);
+            if (undo_message != null) { 
+                  _repository.SaveConfigs();
+                 return Ok(_mapper.Map<ReturnMessageDto>(undo_message));
                 }
                 else
                 {
-                    return BadRequest();
+                    return NotFound();
                 }
-   
-            }
-            else
-            {
-                return NotFound();
-            }
         }
         [HttpPatch("chat/messages/state")]
         public async Task<ActionResult<IEnumerable<ReturnMessageDto>>> SetSeenMessagesAsync(int reader, int sender)

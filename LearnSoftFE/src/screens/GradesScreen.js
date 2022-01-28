@@ -15,7 +15,7 @@ const widthConst = Dimensions.get('screen').width;
 export default   function GradeScreen({ route, navigation }) {
     const user = route.params;
     function Item({props} ){
-    console.log(props)
+
     return (
       <View style={{flexDirection:"row", borderWidth:2, borderRadius: 2,  flex:1, padding: 5, width:widthConst/1.1}}>
         <View style ={styles.FirstItem}>

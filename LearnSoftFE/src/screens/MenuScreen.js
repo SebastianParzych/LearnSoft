@@ -42,11 +42,11 @@ export default function App({ route, navigation }) {
     
 
   ];
-  console.log(route.params)
+
   const [listData, setListData] = React.useState(MenuList);
 
   function Item({ title , screen  }) {
-    console.log(screen)
+
     return (
       <ActionButton
            text = {title}

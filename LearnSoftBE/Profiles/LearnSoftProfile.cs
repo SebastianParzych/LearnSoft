@@ -38,6 +38,7 @@ namespace LearnSoftBE.Profiles
   
 
             CreateMap<User, UserSearchDto>();
+            ///CreateMap<UserUnit, UserUnitsDto>();
             CreateMap<User, UserInfoDto>();
             CreateMap<User, LoginDto>();
             CreateMap<MessageDto, Message>();

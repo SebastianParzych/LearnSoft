@@ -7,9 +7,9 @@ import { CurrentRenderContext } from '@react-navigation/native';
 const delay = 5;
 
 export default function ChatScreen({ route, navigation }) {
-
+  console.log(route.params)
   const CurrentId = route.params.host.userId;
-  const RecieverId =  route.params.user.userId;
+  const RecieverId =  route.params.Data.userId;
 
  
   const [messages, setMessages] = useState([]);
@@ -56,7 +56,9 @@ export default function ChatScreen({ route, navigation }) {
      )
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
-
+  function DeleteLastMes (){
+    console.log("XDDDD")
+  }
   return (
      <View style={{flex: 1}}>
        <View style={{flex: 2}}>
@@ -78,7 +80,8 @@ export default function ChatScreen({ route, navigation }) {
                ZAŁĄCZNIK
        </Text>
       </TouchableOpacity>
-    <TouchableOpacity style={{flex:1,backgroundColor:'red'}}>
+    <TouchableOpacity style={{flex:1,backgroundColor:'red'}}
+         onPress={DeleteLastMes}>
        <Text style={{color:'white',alignItems:'center', alignSelf:'center',alignSelf:'center',alignContent:'center'}}>
               Usuń ostatnią Wiadomość
        </Text>

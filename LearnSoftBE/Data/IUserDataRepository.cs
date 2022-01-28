@@ -21,7 +21,7 @@ namespace LearnSoftBE.Data
         Task<Message> UndoChatMessageAsync(int id);
         Task<Message> FindMessageById(int id);
         Task<Message> CreateMessageAsync(Message message);
-        Task<Message> UndoMessageAsync(Message message);
+        Task<Message> UndoMessageAsync(int sender,int reciever);
         Task<IEnumerable<Message>> SetMessagesSeenAsync(int reader, int sender);
         void SaveConfigs();
     }
