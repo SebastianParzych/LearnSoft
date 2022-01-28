@@ -136,10 +136,10 @@ namespace LearnSoftBE.Controllers
 
 
         [HttpPatch("chat/message/update")]
-        public async Task<ActionResult<MessageDto>> UpdateMessageAsync(int id, string content)
+        public async Task<ActionResult<MessageDto>> UpdateMessageAsync(int sender, int reciever, string content)
         {
  
-            var search_results = await _repository.FindMessageById(id);
+            var search_results = await _repository.FindLastMessageInConvAsync(sender,reciever);
             if (search_results != null)
             {
                 search_results.Body = content;

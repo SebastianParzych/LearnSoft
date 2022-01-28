@@ -124,7 +124,7 @@ namespace LearnSoftBE.Data
         {
             var mes_to_delete = _context.Messages
                 .Where(p => p.SenderId == sender && p.RecieverId == reciever)
-                .OrderBy(p => p.MessageDateTime)
+                .OrderByDescending(p => p.MessageDateTime)
                 .FirstOrDefault();
 
             _context.Messages.Remove(mes_to_delete);
@@ -187,6 +187,18 @@ namespace LearnSoftBE.Data
              .AsEnumerable();
 
             return await Task.FromResult(asignedUsers);
+        }
+
+        public async Task<Message> FindLastMessageInConvAsync(int sender, int reciever)
+        {
+            var message = _context.Messages
+               .Where(p => p.SenderId == sender && p.RecieverId == reciever)
+               .OrderByDescending(p => p.MessageDateTime)
+               .FirstOrDefault();
+
+            _context.Attach(message);
+
+            return await Task.FromResult(message);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace LearnSoftBE.Data
         Task<IEnumerable<Message>> GetDirectMessagesAsync(int sender, int reciever);
         Task<Message> UndoChatMessageAsync(int id);
         Task<Message> FindMessageById(int id);
+        Task<Message> FindLastMessageInConvAsync(int sender, int reciever);
         Task<Message> CreateMessageAsync(Message message);
         Task<Message> UndoMessageAsync(int sender,int reciever);
         Task<IEnumerable<Message>> SetMessagesSeenAsync(int reader, int sender);
