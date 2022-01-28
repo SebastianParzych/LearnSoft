@@ -45,8 +45,7 @@ namespace LearnSoftBE.Controllers
             {
                 var asignedUsers = await _repository.GetAsignedUsersToCourse(courseInfo.ClassCycleId);
                 courseInfo.CourseAssignments = asignedUsers;
-                var xd = _mapper.Map<CourseFullInfoDto>(courseInfo);
-                return Ok(courseInfo);
+                return Ok(_mapper.Map<CourseFullInfoDto>(courseInfo));
 
             }
             else{

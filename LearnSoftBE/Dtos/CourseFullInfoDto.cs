@@ -10,9 +10,9 @@ namespace LearnSoftBE.Dtos
         public int ClassCycleId { get; set; }
         public int StudentCount { get; set; }
         
-        public CourseInfoDto CourseInfo { get; set; }
+        public CourseInfoDto ClassInfo { get; set; }
 
-        public IEnumerable <StudentCourseDto> AssigmentUsers { get; set; }
+        public IEnumerable <StudentCourseDto> CourseAssignments { get; set; }
     }
     public class CourseInfoDto
     {
