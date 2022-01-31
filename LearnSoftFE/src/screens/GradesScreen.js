@@ -15,35 +15,36 @@ const widthConst = Dimensions.get('screen').width;
 export default   function GradeScreen({ route, navigation }) {
     const user = route.params;
     function Item({props} ){
+          console.log(props)
+            return (
+              <View style={{flexDirection:"row", borderWidth:2, borderRadius: 2,  flex:1, padding: 5, width:widthConst/1.1}}>
+                <View style ={styles.FirstItem}>
+                    <Text style={styles.text}>
+                        {props.name}
+                    </Text>
+                </View>
+                        <View style ={styles.markItem}>
+                    <Text  style={styles.text}>
+                        {props.weightedMark}
+                    </Text>
 
-    return (
-      <View style={{flexDirection:"row", borderWidth:2, borderRadius: 2,  flex:1, padding: 5, width:widthConst/1.1}}>
-        <View style ={styles.FirstItem}>
-            <Text style={styles.text}>
-                {props.name}
-             </Text>
-        </View>
-                <View style ={styles.markItem}>
-            <Text  style={styles.text}>
-                {props.weightedMark}
-             </Text>
+                </View>
+                        <View style ={styles.markItem}>
+                    <Text  style={styles.text}>
+                        {props.finalMark}
+                    </Text>
 
-        </View>
-                <View style ={styles.markItem}>
-            <Text  style={styles.text}>
-                {props.finalMark}
-             </Text>
+                </View>
+              </View>
+            );
 
-        </View>
-      </View>
-    );
-
-  }   
+          }   
   const [listData, setListData] = React.useState([]); 
     React.useEffect(() => {
       api.callCoursesGrades({"userid":user.userId})
      .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson)
           setListData(responseJson)
       })
       .catch((error) => {
